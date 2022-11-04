@@ -1,0 +1,21 @@
+body{
+    margin: 0;
+    padding: 0;
+    background: darkslategray;
+}
+
+div#app > div.playField{
+    display: flex;
+    width: 750px;
+    flex-wrap: wrap;
+}
+
+.player{
+    width: 60px;
+    height: 60px;
+    border-Radius: 50%;
+    background: rgb(255, 0, 43);
+    position: absolute;
+    top: 7.5px;
+    left: 7.5px;
+}
