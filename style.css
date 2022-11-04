@@ -10,6 +10,18 @@ div#app > div.playField{
     flex-wrap: wrap;
 }
 
+div#app > div.header{
+    border: none;
+    width: 750px;
+    height: 40px;
+    font-size: 20px;
+    text-transform: uppercase;
+    background: lightgrey;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .player{
     width: 60px;
     height: 60px;

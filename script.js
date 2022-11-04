@@ -1,7 +1,27 @@
+class Element {
+    constructor(){
+        this.element = document.createElement('main')
+        this.element.classList.add('main')
+    }
+}
+
 class PlayField{
     constructor(){
         this.playField = document.createElement('div')
         this.playField.classList.add('playField')
+    }
+}
+
+class Header extends Element{
+    constructor(){
+        super()
+        this.header = document.createElement('div')
+        this.header.classList.add('header')
+    }
+
+    createScoreBoard(){
+        const scoreBoard = document.createElement('div')
+        scoreBoard.classList.add('scoreBoard')
     }
 }
 
@@ -61,6 +81,7 @@ class Food {
 
 class Player {
     constructor(){
+        this.lifes = 3
         this.x = 0
         this.y = 0
         this.player = document.createElement('div')
