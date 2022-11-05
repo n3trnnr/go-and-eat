@@ -2,12 +2,21 @@ body{
     margin: 0;
     padding: 0;
     background: darkslategray;
+    display: flex;  
+    justify-content: center;
+    align-items: center;
+}
+
+div#app{
+    height: 100vh;
 }
 
 div#app > div.playField{
     display: flex;
     width: 750px;
     flex-wrap: wrap;
+    position: relative;
+
 }
 
 div#app > div.header{

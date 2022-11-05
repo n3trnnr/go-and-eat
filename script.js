@@ -1,7 +1,21 @@
 class Element {
+    constructor(){}
+}
+
+class Header {
     constructor(){
-        this.element = document.createElement('main')
-        this.element.classList.add('main')
+        this.header = document.createElement('div')
+        this.header.classList.add('header')
+    }
+
+
+}
+
+class ScoreBoard extends Header {
+    constructor(){
+        super()
+        this.scoreBoard = document.createElement('div')
+        this.scoreBoard.classList.add('scoreBoard')
     }
 }
 
@@ -9,19 +23,6 @@ class PlayField{
     constructor(){
         this.playField = document.createElement('div')
         this.playField.classList.add('playField')
-    }
-}
-
-class Header extends Element{
-    constructor(){
-        super()
-        this.header = document.createElement('div')
-        this.header.classList.add('header')
-    }
-
-    createScoreBoard(){
-        const scoreBoard = document.createElement('div')
-        scoreBoard.classList.add('scoreBoard')
     }
 }
 
@@ -50,7 +51,7 @@ class Food {
         this.damageArr = []
     }
 
-    addElements(cells){
+    addElements(cells, damage = [], food = []){
         
 
         for(let i = 0; i < 100; i++){
@@ -69,10 +70,10 @@ class Food {
 
                 if((i + deltaRandom) % 4 === 0){
                     someEl.style.background = 'black'
-                    this.damageArr.push(someEl)
+                    food.push(someEl)
                 }else{
                     someEl.style.background = 'yellow'
-                    this.foodArr.push(someEl)
+                    damage.push(someEl)
                 }
             }
         }
@@ -91,26 +92,26 @@ class Player {
 
     createAction(){
         document.body.addEventListener('keyup', (event) => {
-            if(event.code ==='ArrowDown' && this.y < 9){
+            if(event.code ==='ArrowDown' && this.y < 9 && this.lifes > 0){
                 this.y++
                 this.player.style.top = (75 - 60) / 2 + (75 * this.y) + 'px'                   
-                console.log(this.y)
+                // console.log(this.y)
 
-            }else if(event.code === 'ArrowUp' && this.y > 0){
+            }else if(event.code === 'ArrowUp' && this.y > 0 && this.lifes > 0){
                 this.y--
                 this.player.style.top = (75 - 60) / 2 + (75 * this.y) + 'px'                   
-                console.log(this.y)
+                // console.log(this.y)
             }
 
-            if(event.code ==='ArrowRight' && this.x < 9){
+            if(event.code ==='ArrowRight' && this.x < 9 && this.lifes > 0){
                 this.x++
                 this.player.style.left = (75 - 60) / 2 + (75 * this.x) + 'px'   
-                console.log(this.x)
+                // console.log(this.x)
             }
-            else if(event.code === 'ArrowLeft' && this.x > 0){
+            else if(event.code === 'ArrowLeft' && this.x > 0 && this.lifes > 0){
                 this.x--
                 this.player.style.left = (75 - 60) / 2 + (75 * this.x) + 'px' 
-                console.log(this.x)
+                // console.log(this.x)   
             }
         })
     }
@@ -121,43 +122,85 @@ class Player {
 }
 
 class App {
+    cellsArr = []
+    foodArr = []
+    damageArr = []
+
     constructor(app){
         this.app = app
+        this.header = new Header()
         this.playField = new PlayField()
         this.cells = new Cells()
         this.food = new Food()
         this.player = new Player()
-        
-        this.cellsArr = []
-        this.pushCells()
-        
-        this.renderCells()
 
-        this.createFood()
+        this.addCellsFoodDamage() //Добавление ячеек в массив cellsArr
+        this.renderCells() // Отрисовка ячеек
+        this.createFood() //Отрисовка еды в ячейках
+        this.renderPlayer() // Отрисовка игрока
+        this.eatFood()
 
-        this.renderPlayer()
-
-        this.mount()
+        this.mountHeader() // Отрисовка header
+        this.mount() // Отрисовка приложения
     }
+
+
 
     createFood(){
-        this.food.addElements(this.cellsArr)
+        this.food.addElements(this.cellsArr, this.foodArr, this.damageArr)
     }
 
-    pushCells(){
+    addCellsFoodDamage(){
         this.cells.createCells(this.cellsArr)
     }
-
-    renderPlayer(){
-        this.player.mount(this.playField.playField)
-    }
-
+    
     renderCells(){
         for(let i of this.cellsArr){
         this.playField.playField.appendChild(i)
         }
     }
 
+    renderPlayer(){
+        this.player.mount(this.playField.playField)
+    }
+
+    eatFood(){
+        // console.log(this.player.y)   
+        const playerPosition = this.player.y * 10 + this.player.x
+        
+
+        // let x = 0
+        // let y = 0
+        // this.player.createAction(x, y)
+        // const playerPosition = y * 10 + x
+        // console.log(y,x)
+
+            //Сравнение координаты (одного числа) и массива (множеста чисел) координат food невозможна без ЦИКЛА!!!
+    for(let id in this.foodArr){
+        //i = название элементов [индексы элементов]
+        const i = this.foodArr[id]
+
+        if(playerPosition === i){//Если позиция player (число) === номеру (числу) ячейки то ==>
+            
+            // Создание переменной для хранения div (ячейки поля-сетки), [i] - массив индексов food (располагающихся на поле из 100 ячеек) 
+            const foodIndexEl = this.cellsArr[i]//все ячейки поля [индекс конкретных ячеек] 
+            foodIndexEl.children[0].remove() //получение (удаление) доступа к ребенку (food) в div (ячейки - elements) / Путь: div ==> children ==> 0 (0 - индекс внутри div)
+            // console.log(foodIndexEl)
+
+            // score++ //Если съедается элемент то score + 1
+            // scoreBoard.innerText = `${score} очков` // добавление значения score с учетом изменения score + 1
+            // // console.log(score)
+
+            //Удаление индекса в массиве. Метод splice удаляет (заменяет один элемент на другой. Можно заменить на пустоту) индекс еды. Используется вместе удаления child.
+            this.foodArr.splice (id, 1)//id - цель, перебранные ключи из foodIndexArr, 1 - замена первого элемента в массиве.
+            // console.log(foodIndexArr)
+            }
+        }
+    }
+
+    mountHeader(){
+        this.app.appendChild(this.header.header)
+    }
 
     mount(){
         this.app.appendChild(this.playField.playField)
@@ -166,4 +209,4 @@ class App {
 
 const app = new App(document.getElementById('app'))
 
-// console.log(app.cellsArr)
+// console.log('food:', app.foodArr, 'damage:', app.damageArr)
