@@ -47,8 +47,6 @@ class Cells {
 
 class Food {
     constructor() {
-        // this.foodArr = []
-        // this.damageArr = []
     }
 
     addElements(cells, damage, food) {
