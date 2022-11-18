@@ -1,9 +1,9 @@
 class Element {
-    constructor(){}
+    constructor() { }
 }
 
 class Header {
-    constructor(){
+    constructor() {
         this.header = document.createElement('div')
         this.header.classList.add('header')
     }
@@ -11,26 +11,26 @@ class Header {
 
 }
 
-class ScoreBoard extends Header {
-    constructor(){
+class ScoreBoard extends Element {
+    constructor() {
         super()
         this.scoreBoard = document.createElement('div')
         this.scoreBoard.classList.add('scoreBoard')
     }
 }
 
-class PlayField{
-    constructor(){
+class PlayField {
+    constructor() {
         this.playField = document.createElement('div')
         this.playField.classList.add('playField')
     }
 }
 
 class Cells {
-    constructor(){}
+    constructor() { }
 
-    createCells(cells){
-        for(let i = 0; i < 100; i++){
+    createCells(cells) {
+        for (let i = 0; i < 100; i++) {
             const el = document.createElement('div')
             el.style.border = '1px solid white'
             el.style.width = '75px'
@@ -42,24 +42,24 @@ class Cells {
             el.style.boxSizing = 'border-box'
             cells.push(el) //Добавление элементов в this.cellsArr
         }
-    }   
+    }
 }
 
 class Food {
-    constructor(){
-        this.foodArr = []
-        this.damageArr = []
+    constructor() {
+        // this.foodArr = []
+        // this.damageArr = []
     }
 
-    addElements(cells, damage = [], food = []){
-        
+    addElements(cells, damage, food) {
 
-        for(let i = 0; i < 100; i++){
-            const deltaRandom = Math.round (Math.random () * 100) 
-            
+
+        for (let i = 0; i < 100; i++) {
+            const deltaRandom = Math.round(Math.random() * 100)
+
             const el = cells[i]
 
-            if((i + deltaRandom) % 3 === 0){
+            if ((i + deltaRandom) % 3 === 0) {
                 const someEl = document.createElement('div')
                 someEl.style.width = '50px'
                 someEl.style.height = '50px'
@@ -68,10 +68,10 @@ class Food {
                 someEl.style.margin = '2px'
                 el.appendChild(someEl)
 
-                if((i + deltaRandom) % 4 === 0){
+                if ((i + deltaRandom) % 4 === 0) {
                     someEl.style.background = 'black'
                     food.push(someEl)
-                }else{
+                } else {
                     someEl.style.background = 'yellow'
                     damage.push(someEl)
                 }
@@ -81,7 +81,7 @@ class Food {
 }
 
 class Player {
-    constructor(){
+    constructor() {
         this.lifes = 3
         this.x = 0
         this.y = 0
@@ -90,33 +90,31 @@ class Player {
         this.createAction()
     }
 
-    createAction(){
+    createAction() {
+
         document.body.addEventListener('keyup', (event) => {
-            if(event.code ==='ArrowDown' && this.y < 9 && this.lifes > 0){
+            if (event.code === 'ArrowDown' && this.y < 9 && this.lifes > 0) {
                 this.y++
-                this.player.style.top = (75 - 60) / 2 + (75 * this.y) + 'px'                   
-                // console.log(this.y)
+                this.player.style.top = (75 - 60) / 2 + (75 * this.y) + 'px'
 
-            }else if(event.code === 'ArrowUp' && this.y > 0 && this.lifes > 0){
+            } else if (event.code === 'ArrowUp' && this.y > 0 && this.lifes > 0) {
                 this.y--
-                this.player.style.top = (75 - 60) / 2 + (75 * this.y) + 'px'                   
-                // console.log(this.y)
+                this.player.style.top = (75 - 60) / 2 + (75 * this.y) + 'px'
             }
 
-            if(event.code ==='ArrowRight' && this.x < 9 && this.lifes > 0){
+            if (event.code === 'ArrowRight' && this.x < 9 && this.lifes > 0) {
                 this.x++
-                this.player.style.left = (75 - 60) / 2 + (75 * this.x) + 'px'   
-                // console.log(this.x)
+                this.player.style.left = (75 - 60) / 2 + (75 * this.x) + 'px'
             }
-            else if(event.code === 'ArrowLeft' && this.x > 0 && this.lifes > 0){
+            else if (event.code === 'ArrowLeft' && this.x > 0 && this.lifes > 0) {
                 this.x--
-                this.player.style.left = (75 - 60) / 2 + (75 * this.x) + 'px' 
-                // console.log(this.x)   
+                this.player.style.left = (75 - 60) / 2 + (75 * this.x) + 'px'
             }
+            console.log(this.x, this.y)
         })
     }
 
-    mount(playField){
+    mount(playField) {
         playField.appendChild(this.player)
     }
 }
@@ -126,7 +124,7 @@ class App {
     foodArr = []
     damageArr = []
 
-    constructor(app){
+    constructor(app) {
         this.app = app
         this.header = new Header()
         this.playField = new PlayField()
@@ -146,28 +144,27 @@ class App {
 
 
 
-    createFood(){
+    createFood() {
         this.food.addElements(this.cellsArr, this.foodArr, this.damageArr)
     }
 
-    addCellsFoodDamage(){
+    addCellsFoodDamage() {
         this.cells.createCells(this.cellsArr)
     }
-    
-    renderCells(){
-        for(let i of this.cellsArr){
-        this.playField.playField.appendChild(i)
+
+    renderCells() {
+        for (let i of this.cellsArr) {
+            this.playField.playField.appendChild(i)
         }
     }
 
-    renderPlayer(){
+    renderPlayer() {
         this.player.mount(this.playField.playField)
     }
 
-    eatFood(){
+    eatFood() {
         // console.log(this.player.y)   
         const playerPosition = this.player.y * 10 + this.player.x
-        
 
         // let x = 0
         // let y = 0
@@ -175,38 +172,32 @@ class App {
         // const playerPosition = y * 10 + x
         // console.log(y,x)
 
-            //Сравнение координаты (одного числа) и массива (множеста чисел) координат food невозможна без ЦИКЛА!!!
-    for(let id in this.foodArr){
-        //i = название элементов [индексы элементов]
-        const i = this.foodArr[id]
+        for (let id in this.foodArr) {
 
-        if(playerPosition === i){//Если позиция player (число) === номеру (числу) ячейки то ==>
-            
-            // Создание переменной для хранения div (ячейки поля-сетки), [i] - массив индексов food (располагающихся на поле из 100 ячеек) 
-            const foodIndexEl = this.cellsArr[i]//все ячейки поля [индекс конкретных ячеек] 
-            foodIndexEl.children[0].remove() //получение (удаление) доступа к ребенку (food) в div (ячейки - elements) / Путь: div ==> children ==> 0 (0 - индекс внутри div)
-            // console.log(foodIndexEl)
+            const i = this.foodArr[id]
 
-            // score++ //Если съедается элемент то score + 1
-            // scoreBoard.innerText = `${score} очков` // добавление значения score с учетом изменения score + 1
-            // // console.log(score)
+            if (playerPosition === i) {
+                const foodIndexEl = this.cellsArr[i]
+                foodIndexEl.children[0].remove()
 
-            //Удаление индекса в массиве. Метод splice удаляет (заменяет один элемент на другой. Можно заменить на пустоту) индекс еды. Используется вместе удаления child.
-            this.foodArr.splice (id, 1)//id - цель, перебранные ключи из foodIndexArr, 1 - замена первого элемента в массиве.
-            // console.log(foodIndexArr)
+                // score++ //Если съедается элемент то score + 1
+                // scoreBoard.innerText = `${score} очков` // добавление значения score с учетом изменения score + 1
+                // // console.log(score)
+
+                this.foodArr.splice(id, 1)
             }
         }
     }
 
-    mountHeader(){
+    mountHeader() {
         this.app.appendChild(this.header.header)
     }
 
-    mount(){
+    mount() {
         this.app.appendChild(this.playField.playField)
     }
 }
 
 const app = new App(document.getElementById('app'))
 
-// console.log('food:', app.foodArr, 'damage:', app.damageArr)
+console.log('food:', app.foodArr, 'damage:', app.damageArr, 'cells:', app.cellsArr)
