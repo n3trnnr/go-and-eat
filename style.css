@@ -1,26 +1,24 @@
-body{
+body {
     margin: 0;
     padding: 0;
     background: darkslategray;
-    display: flex;  
+    display: flex;
     justify-content: center;
     align-items: center;
 }
 
-div#app{
+div#app {
     height: 100vh;
 }
 
-div#app > div.playField{
+div#app>div.playField {
     display: flex;
     width: 750px;
     flex-wrap: wrap;
     position: relative;
-
 }
 
-div#app > div.header{
-    border: none;
+div#app>div.header {
     width: 750px;
     height: 40px;
     font-size: 20px;
@@ -31,7 +29,43 @@ div#app > div.header{
     align-items: center;
 }
 
-.player{
+div#app>div.header>div.scoreBoard {
+    width: 250px;
+    height: 40px;
+    font-size: 20px;
+    text-transform: uppercase;
+    background: lightgrey;
+    /* border: 1px solid rgb(255, 255, 255); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div#app>div.header>div.level {
+    width: 333px;
+    height: 40px;
+    font-size: 20px;
+    text-transform: uppercase;
+    background: lightgrey;
+    /* border: 2px solid rgb(255, 255, 255); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div#app>div.header>div.lifes {
+    width: 250px;
+    height: 40px;
+    font-size: 20px;
+    text-transform: uppercase;
+    background: lightgrey;
+    /* border: 1px solid rgb(255, 255, 255); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div#app>div.playField>div.player {
     width: 60px;
     height: 60px;
     border-Radius: 50%;
@@ -39,4 +73,40 @@ div#app > div.header{
     position: absolute;
     top: 7.5px;
     left: 7.5px;
+}
+
+div#popup {
+    width: 500px;
+    height: 200px;
+    background: rgb(255, 104, 252);
+    border: 2px solid purple;
+    position: absolute;
+    top: 275px;
+    left: 125px;
+    font-size: 50px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+div#app>div.playField>div#popup>div.popup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* text-align: center; */
+}
+
+div#app>div.playField>div#popup>button#new-game {
+    width: 200px;
+    height: 40px;
+    margin-top: 15px;
+    font-size: 25px;
+    border: none;
+    border-radius: 20px;
+    background: rgb(255, 255, 255);
+}
+
+div#app>div.playField>div#popup>button#new-game:hover {
+    background: rgb(238, 255, 0);
 }

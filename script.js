@@ -1,21 +1,21 @@
-class Element {
-    constructor() { }
-}
-
 class Header {
     constructor() {
         this.header = document.createElement('div')
         this.header.classList.add('header')
     }
-
-
 }
 
-class ScoreBoard extends Element {
+class ScoreBoard {
     constructor() {
-        super()
+        this.level = 1
+        this.levelEl = document.createElement('div')
+        this.levelEl.classList.add('level')
+        this.levelEl.innerText = `${this.level} уровень`
+
+        this.score = 0
         this.scoreBoard = document.createElement('div')
         this.scoreBoard.classList.add('scoreBoard')
+        this.scoreBoard.innerText = `${this.score} очков`
     }
 }
 
@@ -51,7 +51,7 @@ class Food {
         // this.damageArr = []
     }
 
-    addElements(cells, damage, food) {
+    addElements(emptyCell, cells, food, damage) {
 
 
         for (let i = 0; i < 100; i++) {
@@ -59,7 +59,7 @@ class Food {
 
             const el = cells[i]
 
-            if ((i + deltaRandom) % 3 === 0) {
+            if (i !== emptyCell && (i + deltaRandom) % 3 === 0) {
                 const someEl = document.createElement('div')
                 someEl.style.width = '35px'
                 someEl.style.height = '35px'
@@ -70,10 +70,10 @@ class Food {
 
                 if ((i + deltaRandom) % 4 === 0) {
                     someEl.style.background = 'black'
-                    food.push(i)
+                    damage.push(i)
                 } else {
                     someEl.style.background = 'yellow'
-                    damage.push(i)
+                    food.push(i)
                 }
             }
         }
@@ -83,6 +83,10 @@ class Food {
 class Player {
     constructor() {
         this.lifes = 3
+        this.lifesEl = document.createElement('div')
+        this.lifesEl.classList.add('lifes')
+        this.lifesEl.innerText = `${this.lifes} жизни`
+
         this.x = 0
         this.y = 0
         this.player = document.createElement('div')
@@ -102,6 +106,7 @@ class App {
     constructor(app) {
         this.app = app
         this.header = new Header()
+        this.scoreBoard = new ScoreBoard()
         this.playField = new PlayField()
         this.cells = new Cells()
         this.food = new Food()
@@ -111,14 +116,14 @@ class App {
         this.renderCells() // Отрисовка ячеек
         this.createFood() //Отрисовка еды в ячейках
         this.renderPlayer() // Отрисовка игрока
-        this.eatFood()
+        this.eatFood() // Действие поедания еды
 
         this.mountHeader() // Отрисовка header
         this.mount() // Отрисовка приложения
     }
 
     createFood() {
-        this.food.addElements(this.cellsArr, this.foodArr, this.damageArr)
+        this.food.addElements(0, this.cellsArr, this.foodArr, this.damageArr)
     }
 
     addCells() {
@@ -137,20 +142,20 @@ class App {
 
     eatFood() {
         document.body.addEventListener('keyup', (event) => {
-            if (event.code === 'ArrowDown' && this.player.y < 9 && this.player.lifes > 0) {
+            if (event.code === 'ArrowDown' && this.player.y < 9 && this.player.lifes > 0 && this.scoreBoard.level < 5) {
                 this.player.y++
                 this.player.player.style.top = (75 - 60) / 2 + (75 * this.player.y) + 'px'
 
-            } else if (event.code === 'ArrowUp' && this.player.y > 0 && this.player.lifes > 0) {
+            } else if (event.code === 'ArrowUp' && this.player.y > 0 && this.player.lifes > 0 && this.scoreBoard.level < 5) {
                 this.player.y--
                 this.player.player.style.top = (75 - 60) / 2 + (75 * this.player.y) + 'px'
             }
 
-            if (event.code === 'ArrowRight' && this.player.x < 9 && this.player.lifes > 0) {
+            if (event.code === 'ArrowRight' && this.player.x < 9 && this.player.lifes > 0 && this.scoreBoard.level < 5) {
                 this.player.x++
                 this.player.player.style.left = (75 - 60) / 2 + (75 * this.player.x) + 'px'
             }
-            else if (event.code === 'ArrowLeft' && this.player.x > 0 && this.player.lifes > 0) {
+            else if (event.code === 'ArrowLeft' && this.player.x > 0 && this.player.lifes > 0 && this.scoreBoard.level < 5) {
                 this.player.x--
                 this.player.player.style.left = (75 - 60) / 2 + (75 * this.player.x) + 'px'
             }
@@ -165,7 +170,8 @@ class App {
                     foodEl.children[0].remove()
                     this.foodArr.splice(id, 1)
 
-                    console.log(this.foodArr)
+                    this.scoreBoard.score++
+                    this.scoreBoard.scoreBoard.innerText = `${this.scoreBoard.score} очков`
                 }
             }
 
@@ -177,13 +183,72 @@ class App {
                     damageEl.children[0].remove()
                     this.damageArr.splice(id, 1)
 
-                    console.log(this.damageArr)
+                    this.player.lifes--
+                    this.player.lifesEl.innerText = `${this.player.lifes} жизни`
                 }
             }
+
+            if (this.foodArr.length === 0) {
+
+                while (this.damageArr.length > 0) {
+                    const damageEl = this.cellsArr[this.damageArr.shift()]
+                    damageEl.children[0].remove()
+                }
+
+                this.scoreBoard.level++
+                this.scoreBoard.levelEl.innerText = `${this.scoreBoard.level} уровень`
+
+                this.food.addElements(playerPosition, this.cellsArr, this.foodArr, this.damageArr)
+            }
+
+            if (this.player.lifes === 0 || this.scoreBoard.level > 4) {
+                const popup = document.getElementById('popup')
+                popup.style.display = 'flex'
+                this.playField.playField.appendChild(popup)
+            }
+
+            const button = document.getElementById('new-game')
+            button.addEventListener('click', () => {
+                this.newGame()
+            })
         })
     }
 
+    newGame() {
+        this.player.x = 0
+        this.player.y = 0
+        this.player.player.style.top = '7.5px'
+        this.player.player.style.left = '7.5px'
+
+        while (this.foodArr.length > 0) {
+            const foodEl = this.cellsArr[this.foodArr.shift()]
+            foodEl.children[0].remove()
+        }
+
+        while (this.damageArr.length > 0) {
+            const damageEl = this.cellsArr[this.damageArr.shift()]
+            damageEl.children[0].remove()
+        }
+
+        this.food.addElements(0, this.cellsArr, this.foodArr, this.damageArr)
+
+        this.player.lifes = 3
+        this.scoreBoard.score = 0
+        this.scoreBoard.level = 1
+
+        this.player.lifesEl.innerText = `${this.player.lifes} жизни`
+        this.scoreBoard.scoreBoard.innerText = `${this.scoreBoard.score} очков`
+        this.scoreBoard.levelEl.innerText = `${this.scoreBoard.level} уровень`
+
+        const popup = document.getElementById('popup')
+        popup.style.display = 'none'
+        this.playField.playField.appendChild(popup)
+    }
+
     mountHeader() {
+        this.header.header.appendChild(this.scoreBoard.scoreBoard)
+        this.header.header.appendChild(this.scoreBoard.levelEl)
+        this.header.header.appendChild(this.player.lifesEl)
         this.app.appendChild(this.header.header)
     }
 
