@@ -47,6 +47,8 @@ class Cells {
 
 class Food {
     constructor() {
+        // this.foodArr = []
+        // this.damageArr = []
     }
 
     addElements(cells, damage, food) {
@@ -59,8 +61,8 @@ class Food {
 
             if ((i + deltaRandom) % 3 === 0) {
                 const someEl = document.createElement('div')
-                someEl.style.width = '50px'
-                someEl.style.height = '50px'
+                someEl.style.width = '35px'
+                someEl.style.height = '35px'
                 someEl.style.borderRadius = '50%'
                 someEl.style.background = 'yellow'
                 someEl.style.margin = '2px'
@@ -68,10 +70,10 @@ class Food {
 
                 if ((i + deltaRandom) % 4 === 0) {
                     someEl.style.background = 'black'
-                    food.push(someEl)
+                    food.push(i)
                 } else {
                     someEl.style.background = 'yellow'
-                    damage.push(someEl)
+                    damage.push(i)
                 }
             }
         }
@@ -85,31 +87,6 @@ class Player {
         this.y = 0
         this.player = document.createElement('div')
         this.player.classList.add('player')
-        this.createAction()
-    }
-
-    createAction() {
-
-        document.body.addEventListener('keyup', (event) => {
-            if (event.code === 'ArrowDown' && this.y < 9 && this.lifes > 0) {
-                this.y++
-                this.player.style.top = (75 - 60) / 2 + (75 * this.y) + 'px'
-
-            } else if (event.code === 'ArrowUp' && this.y > 0 && this.lifes > 0) {
-                this.y--
-                this.player.style.top = (75 - 60) / 2 + (75 * this.y) + 'px'
-            }
-
-            if (event.code === 'ArrowRight' && this.x < 9 && this.lifes > 0) {
-                this.x++
-                this.player.style.left = (75 - 60) / 2 + (75 * this.x) + 'px'
-            }
-            else if (event.code === 'ArrowLeft' && this.x > 0 && this.lifes > 0) {
-                this.x--
-                this.player.style.left = (75 - 60) / 2 + (75 * this.x) + 'px'
-            }
-            console.log(this.x, this.y)
-        })
     }
 
     mount(playField) {
@@ -130,7 +107,7 @@ class App {
         this.food = new Food()
         this.player = new Player()
 
-        this.addCellsFoodDamage() //Добавление ячеек в массив cellsArr
+        this.addCells() //Добавление ячеек в массив cellsArr
         this.renderCells() // Отрисовка ячеек
         this.createFood() //Отрисовка еды в ячейках
         this.renderPlayer() // Отрисовка игрока
@@ -140,13 +117,11 @@ class App {
         this.mount() // Отрисовка приложения
     }
 
-
-
     createFood() {
         this.food.addElements(this.cellsArr, this.foodArr, this.damageArr)
     }
 
-    addCellsFoodDamage() {
+    addCells() {
         this.cells.createCells(this.cellsArr)
     }
 
@@ -161,30 +136,51 @@ class App {
     }
 
     eatFood() {
-        // console.log(this.player.y)   
-        const playerPosition = this.player.y * 10 + this.player.x
+        document.body.addEventListener('keyup', (event) => {
+            if (event.code === 'ArrowDown' && this.player.y < 9 && this.player.lifes > 0) {
+                this.player.y++
+                this.player.player.style.top = (75 - 60) / 2 + (75 * this.player.y) + 'px'
 
-        // let x = 0
-        // let y = 0
-        // this.player.createAction(x, y)
-        // const playerPosition = y * 10 + x
-        // console.log(y,x)
-
-        for (let id in this.foodArr) {
-
-            const i = this.foodArr[id]
-
-            if (playerPosition === i) {
-                const foodIndexEl = this.cellsArr[i]
-                foodIndexEl.children[0].remove()
-
-                // score++ //Если съедается элемент то score + 1
-                // scoreBoard.innerText = `${score} очков` // добавление значения score с учетом изменения score + 1
-                // // console.log(score)
-
-                this.foodArr.splice(id, 1)
+            } else if (event.code === 'ArrowUp' && this.player.y > 0 && this.player.lifes > 0) {
+                this.player.y--
+                this.player.player.style.top = (75 - 60) / 2 + (75 * this.player.y) + 'px'
             }
-        }
+
+            if (event.code === 'ArrowRight' && this.player.x < 9 && this.player.lifes > 0) {
+                this.player.x++
+                this.player.player.style.left = (75 - 60) / 2 + (75 * this.player.x) + 'px'
+            }
+            else if (event.code === 'ArrowLeft' && this.player.x > 0 && this.player.lifes > 0) {
+                this.player.x--
+                this.player.player.style.left = (75 - 60) / 2 + (75 * this.player.x) + 'px'
+            }
+
+            const playerPosition = this.player.y * 10 + this.player.x
+
+            for (let id in this.foodArr) {
+                const i = this.foodArr[id]
+
+                if (playerPosition === i) {
+                    const foodEl = this.cellsArr[i]
+                    foodEl.children[0].remove()
+                    this.foodArr.splice(id, 1)
+
+                    console.log(this.foodArr)
+                }
+            }
+
+            for (let id in this.damageArr) {
+                const i = this.damageArr[id]
+
+                if (playerPosition === i) {
+                    const damageEl = this.cellsArr[i]
+                    damageEl.children[0].remove()
+                    this.damageArr.splice(id, 1)
+
+                    console.log(this.damageArr)
+                }
+            }
+        })
     }
 
     mountHeader() {
@@ -197,5 +193,3 @@ class App {
 }
 
 const app = new App(document.getElementById('app'))
-
-console.log('food:', app.foodArr, 'damage:', app.damageArr, 'cells:', app.cellsArr)
