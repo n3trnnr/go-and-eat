@@ -1,7 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa&display=swap');
+
 body {
     margin: 0;
     padding: 0;
-    background: rgba(255, 255, 255, 0.645);
+    background: rgb(255, 255, 255);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -9,6 +11,7 @@ body {
 
 div#app {
     height: 100vh;
+    font-family: 'Comfortaa', cursive;
 }
 
 div#app>div.playField {
@@ -25,7 +28,7 @@ div#app>div.playField>div.player {
     top: 7.5px;
     left: 7.5px;
     border-Radius: 50%;
-    background: rgb(255, 0, 43);
+    background: rgb(255, 0, 0);
 }
 
 div#app>div.playField>div.player {
@@ -33,13 +36,12 @@ div#app>div.playField>div.player {
 }
 
 div#app>div.header {
+    margin: 10px 0px;
     width: 748px;
     height: 40px;
     display: flex;
-    background: rgb(125, 125, 125);
-    border: 1px solid white;
-    color: white;
-    font-size: 25px;
+    color: rgb(50, 50, 50);
+    font-size: 30px;
     text-transform: uppercase;
 }
 
@@ -71,7 +73,6 @@ div#popup {
     width: 500px;
     height: 200px;
     background: rgba(255, 255, 255, 0.9);
-    /* border: 1px solid rgb(0, 0, 0); */
     position: absolute;
     top: 275px;
     left: 125px;

@@ -10,12 +10,12 @@ class ScoreBoard {
         this.level = 1
         this.levelEl = document.createElement('div')
         this.levelEl.classList.add('level')
-        this.levelEl.innerText = `Уровень: ${this.level}`
+        this.levelEl.innerText = `Уровень : ${this.level}`
 
         this.score = 0
         this.scoreBoard = document.createElement('div')
         this.scoreBoard.classList.add('scoreBoard')
-        this.scoreBoard.innerText = `Очков: ${this.score}`
+        this.scoreBoard.innerText = `Очков : ${this.score}`
     }
 }
 
@@ -35,7 +35,8 @@ class Cells {
             el.style.border = '1px solid white'
             el.style.width = '75px'
             el.style.height = '75px'
-            el.style.background = 'rgba(125, 125, 125, 0.55)'
+            el.style.borderRadius = '5px'
+            el.style.background = 'rgba(125, 125, 125, .9)'
             el.style.display = 'flex'
             el.style.justifyContent = 'center'
             el.style.alignItems = 'center'
@@ -82,7 +83,7 @@ class Player {
         this.lifes = 3
         this.lifesEl = document.createElement('div')
         this.lifesEl.classList.add('lifes')
-        this.lifesEl.innerText = `Жизней: ${this.lifes}`
+        this.lifesEl.innerText = `Жизней : ${this.lifes}`
 
         this.x = 0
         this.y = 0
@@ -168,7 +169,7 @@ class App {
                     this.foodArr.splice(id, 1)
 
                     this.scoreBoard.score++
-                    this.scoreBoard.scoreBoard.innerText = `Очков: ${this.scoreBoard.score}`
+                    this.scoreBoard.scoreBoard.innerText = `Очков : ${this.scoreBoard.score}`
                 }
             }
 
@@ -181,7 +182,7 @@ class App {
                     this.damageArr.splice(id, 1)
 
                     this.player.lifes--
-                    this.player.lifesEl.innerText = `Жизней: ${this.player.lifes}`
+                    this.player.lifesEl.innerText = `Жизней : ${this.player.lifes}`
                 }
             }
 
@@ -193,7 +194,7 @@ class App {
                 }
 
                 this.scoreBoard.level++
-                this.scoreBoard.levelEl.innerText = `Уровень: ${this.scoreBoard.level}`
+                this.scoreBoard.levelEl.innerText = `Уровень : ${this.scoreBoard.level}`
 
                 this.food.addElements(playerPosition, this.cellsArr, this.foodArr, this.damageArr)
             }
@@ -233,9 +234,9 @@ class App {
         this.scoreBoard.score = 0
         this.scoreBoard.level = 1
 
-        this.player.lifesEl.innerText = `Жизней: ${this.player.lifes}`
-        this.scoreBoard.scoreBoard.innerText = `Очков: ${this.scoreBoard.score}`
-        this.scoreBoard.levelEl.innerText = `Уровень: ${this.scoreBoard.level}`
+        this.player.lifesEl.innerText = `Жизней : ${this.player.lifes}`
+        this.scoreBoard.scoreBoard.innerText = `Очков : ${this.scoreBoard.score}`
+        this.scoreBoard.levelEl.innerText = `Уровень : ${this.scoreBoard.level}`
 
         const popup = document.getElementById('popup')
         popup.style.display = 'none'
