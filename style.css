@@ -1,7 +1,7 @@
 body {
     margin: 0;
     padding: 0;
-    background: darkslategray;
+    background: rgba(255, 255, 255, 0.645);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,24 +18,34 @@ div#app>div.playField {
     position: relative;
 }
 
+div#app>div.playField>div.player {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    top: 7.5px;
+    left: 7.5px;
+    border-Radius: 50%;
+    background: rgb(255, 0, 43);
+}
+
+div#app>div.playField>div.player {
+    transition-duration: 0.2s;
+}
+
 div#app>div.header {
-    width: 750px;
+    width: 748px;
     height: 40px;
-    font-size: 20px;
-    text-transform: uppercase;
-    background: lightgrey;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    background: rgb(125, 125, 125);
+    border: 1px solid white;
+    color: white;
+    font-size: 25px;
+    text-transform: uppercase;
 }
 
 div#app>div.header>div.scoreBoard {
     width: 250px;
     height: 40px;
-    font-size: 20px;
-    text-transform: uppercase;
-    background: lightgrey;
-    /* border: 1px solid rgb(255, 255, 255); */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -44,10 +54,6 @@ div#app>div.header>div.scoreBoard {
 div#app>div.header>div.level {
     width: 333px;
     height: 40px;
-    font-size: 20px;
-    text-transform: uppercase;
-    background: lightgrey;
-    /* border: 2px solid rgb(255, 255, 255); */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -56,30 +62,16 @@ div#app>div.header>div.level {
 div#app>div.header>div.lifes {
     width: 250px;
     height: 40px;
-    font-size: 20px;
-    text-transform: uppercase;
-    background: lightgrey;
-    /* border: 1px solid rgb(255, 255, 255); */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-div#app>div.playField>div.player {
-    width: 60px;
-    height: 60px;
-    border-Radius: 50%;
-    background: rgb(255, 0, 43);
-    position: absolute;
-    top: 7.5px;
-    left: 7.5px;
-}
-
 div#popup {
     width: 500px;
     height: 200px;
-    background: rgb(255, 104, 252);
-    border: 2px solid purple;
+    background: rgba(255, 255, 255, 0.9);
+    /* border: 1px solid rgb(0, 0, 0); */
     position: absolute;
     top: 275px;
     left: 125px;
@@ -94,19 +86,23 @@ div#app>div.playField>div#popup>div.popup {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* text-align: center; */
+    text-transform: uppercase;
 }
 
 div#app>div.playField>div#popup>button#new-game {
-    width: 200px;
-    height: 40px;
+    width: 250px;
+    height: 50px;
     margin-top: 15px;
     font-size: 25px;
+    text-transform: uppercase;
     border: none;
     border-radius: 20px;
-    background: rgb(255, 255, 255);
+    background: rgb(255, 0, 0);
+    transition-duration: 0.3s;
 }
 
 div#app>div.playField>div#popup>button#new-game:hover {
-    background: rgb(238, 255, 0);
+    background: rgb(0, 0, 0);
+    border: 2px solid rgb(0, 0, 0);
+    color: white;
 }
